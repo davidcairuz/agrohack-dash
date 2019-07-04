@@ -1,0 +1,84 @@
+.main-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "information graph buttons";
+    justify-items: center;
+}
+
+.information { grid-area: information; }
+
+.graph { grid-area: graph; }
+
+.buttons { grid-area: buttons; }
+
+.mini-container {
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey
+}
+
+.info-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: "info1 info2 info3" "info4 info5 info6";
+}
+
+.info1 { grid-area: info1; }
+
+.info2 { grid-area: info2; }
+
+.info3 { grid-area: info3; }
+
+.info4 { grid-area: info4; }
+
+.info5 { grid-area: info5; }
+
+.info6 { grid-area: info6; }
+
+.buttons-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 200px);
+    grid-gap: 2rem;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "button1 button2" "button3 button4" "button5 button6" "button7 button7";
+}
+  
+.button1 { 
+    grid-area: button1;
+}
+  
+.button2 {
+    grid-area: button2;
+}
+  
+.button3 {
+    grid-area: button3;
+}
+  
+.button4 {
+    grid-area: button4;
+}
+
+.button5 {
+    grid-area: button5;
+}
+
+.button6 {
+    grid-area: button6;
+}
+
+.button7 {
+    grid-area: button7;
+}
+
+.button {
+    width: 200px
+}
+
+.button-large {
+    width: 420px;
+}
