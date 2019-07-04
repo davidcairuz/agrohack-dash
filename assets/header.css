@@ -8,12 +8,14 @@
 
 .information { grid-area: information; }
 
-.graph { grid-area: graph; }
+.graph {
+    grid-area: graph;
+}
 
 .buttons { grid-area: buttons; }
 
 .mini-container {
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     margin: 10px;
     padding: 15px;
     position: relative;
@@ -76,9 +78,102 @@
 }
 
 .button {
-    width: 200px
+    width: 200px;
+    background-color: #ffffff
+    
 }
 
 .button-large {
     width: 420px;
+    background-color: #ffffff
 }
+
+.update-button {
+    background-color: #ffffff
+}
+
+.detailed-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "simulation detailed-information startups";
+    justify-items: center;
+}
+
+.startups { grid-area: startups; }
+  
+.detailed-information { grid-area: detailed-information; }
+  
+.simulation { grid-area: simulation; }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "mini-container1" "mini-container2" "mini-container3" "mini-container4" "mini-container5";
+  }
+  
+.mini-container1 { grid-area: mini-container1; }
+  
+.mini-container2 { grid-area: mini-container2; }
+  
+.mini-container3 { grid-area: mini-container3; }
+  
+.mini-container4 { grid-area: mini-container4; }
+
+.mini-container-detailed {
+    background-color: #ffffff;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey;
+    width: 400px
+}
+
+.simulation-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "total-relation rendabruta-relation" "lucro lucro" "slider1 slider2";
+  }
+  
+.total-relation { grid-area: total-relation; }
+
+.rendabruta-relation { grid-area: rendabruta-relation; }
+
+.lucro { grid-area: lucro; }
+
+.slider1 { grid-area: slider1; }
+
+.slider2 { grid-area: slider2; }
+
+.mini-container-simulation {
+    background-color: #ffffff;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey;
+    width: 200px
+}
+
+.mini-container-simulation-large {
+    background-color: #ffffff;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey;
+    width: 450px
+}
+
+.startup-grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "startup1" "startup2" "startup3";
+  }
+  
+.startup1 { grid-area: startup1; }
+
+.startup2 { grid-area: startup2; }
+
+.startup3 { grid-area: startup3; }
