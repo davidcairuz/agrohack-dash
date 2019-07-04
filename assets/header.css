@@ -177,3 +177,8 @@
 .startup2 { grid-area: startup2; }
 
 .startup3 { grid-area: startup3; }
+
+body { 
+    margin: 0;
+    background-color: #fafcff;
+}

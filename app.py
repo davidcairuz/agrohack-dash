@@ -29,9 +29,9 @@ app.config.suppress_callback_exceptions = True
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content')
-])
+], style={'backgroundColor':'#fafcff'})
 
-home_layout = html.Div(style={'background-color':'#fafcff'}, children=[
+home_layout = html.Div(children=[
     html.Link(href='https://fonts.googleapis.com/css?family=Oxygen&display=swap'),
     html.H1(children=df['Nome da Fazenda'][0], style={'text-align':'center', 'font-family': "'Oxygen', sans-serif", 'padding-top': '30px'}),
 
@@ -88,8 +88,7 @@ home_layout = html.Div(style={'background-color':'#fafcff'}, children=[
                         height=620,
                         paper_bgcolor='#fafcff'
                     )
-                }
-                
+                }   
             )
         ], className='graph'),
 
@@ -161,32 +160,27 @@ nutricao_layout = html.Div(children=[
                 
                 html.Div(children=[
                     html.Div(
-                        ['R$ ' + str(us['Receita Liquida']), html.H4(id="receitaText"), html.P("Receita Líquida")],
-                        id="receita",
-                        className="mini-container-simulation",
-                    ),
-
-                ], className='total-relation'),
-
-                html.Div(children=[
-                    html.Div(
-                        ['R$ ' + str(us['Receita Liquida']), html.H4(id="receitaText"), html.P("Receita Líquida")],
-                        id="receita2",
+                        [str(100.0*us['Alimentação']/us['Custo total']) + '%', html.H4(id="receitaText"), html.P("Nutrição / Custo Total")],
                         className="mini-container-simulation",
                     )
-                ], className='rendabruta-relation'),
+                ], className='total-relation', id="nutricao-por-custo"),
 
                 html.Div(children=[
                     html.Div(
-                        ['R$ ' + str(us['Receita Liquida']), html.H4(id="receitaText"), html.P("Receita Líquida")],
-                        id="receita2",
-                        className="mini-container-simulation-large",
-                    ),
-
-                ], className='lucro'),
+                        [str(100.0*us['Alimentação']/us['Faturamento Bruto']) + '%', html.H4(id="receitaText"), html.P("Nutrição / Renda Bruta")],
+                        className="mini-container-simulation",
+                    )
+                ], className='rendabruta-relation', id="nutricao-por-bruto"),
 
                 html.Div(children=[
-                    html.P('Eficiência (%)'),
+                    html.Div(
+                        ['R$ ' + str(us['Resultado']), html.H4(id="receitaText"), html.P("Resultado da op.")],
+                        className="mini-container-simulation-large",
+                    )
+                ], className='lucro', id="resultados-operacao"),
+
+                html.Div(children=[
+                    html.P('Aumento de eficiência (%)'),
                     html.Div(children=[
                         dcc.Slider(
                             id='percent-slider-eficiency',
@@ -200,7 +194,7 @@ nutricao_layout = html.Div(children=[
                 ], className='slider1', style={'padding-right':'10px', 'padding-top':'10px'}),
 
                 html.Div(children=[
-                    html.P('Custo (%)'),
+                    html.P('Redução de custo (%)'),
                     html.Div(children=[
                         dcc.Slider(
                             id='percent-slider-cost',
@@ -217,6 +211,7 @@ nutricao_layout = html.Div(children=[
             
             html.Div(children=[
                 dcc.Graph(
+                    id='graph-bar',
                     figure = {
                         'data': [
                             go.Bar(
@@ -227,7 +222,7 @@ nutricao_layout = html.Div(children=[
                         ],
                     }
                 )
-            ], className='graph-bar')
+            ], className='graph-bar', id='graph-barr')
 
         ], className='simulation'),
 
@@ -238,8 +233,8 @@ nutricao_layout = html.Div(children=[
                 # Information 1
                 html.Div(children=[
                     html.Div(
-                        ['R$ ' + str(us['Custo total']), html.H4(id="totalText"), html.P("Custo total")],
-                        id="total",
+                        ['R$ ' + str(us['Resultado']/200), html.H4(id="totalText"), html.P("Lucro por ha")],
+                        id="lucro-por-ha",
                         className="mini-container-detailed",
                     )
                 ], className='mini-container1'),
@@ -247,7 +242,7 @@ nutricao_layout = html.Div(children=[
                 # Information 2
                 html.Div(children=[
                     html.Div(
-                        ['R$ ' + str(us['Depreciação']), html.H4(id="depreText"), html.P("Depreciação")],
+                        ['R$ ' + str(round(us['Resultado']/(us['Número de Machos terminação'] * us['Peso Médio dos Animais (@)']), 2)), html.H4(id="depreText"), html.P("Lucro por @")],
                         id="depre",
                         className="mini-container-detailed",
                     )
@@ -256,7 +251,7 @@ nutricao_layout = html.Div(children=[
                 # Information 3
                 html.Div(children=[
                     html.Div(
-                        ['R$ ' + str(us['Faturamento Bruto']), html.H4(id="fatText"), html.P("Faturamento")],
+                        ['R$ ' + str(round(us['Alimentação']/200, 2)), html.H4(id="fatText"), html.P("Nutrição por ha")],
                         id="fat",
                         className="mini-container-detailed",
                     )
@@ -265,13 +260,13 @@ nutricao_layout = html.Div(children=[
                 # Information 4
                 html.Div(children=[
                     html.Div(
-                        ['R$ ' + str(us['Receita Liquida']), html.H4(id="receitaText"), html.P("Receita Líquida")],
+                        ['R$ ' + str(round(us['Alimentação']/(us['Número de Machos terminação'] * us['Peso Médio dos Animais (@)']), 2)), html.H4(id="receitaText"), html.P("Nutrição por @")],
                         id="receita",
                         className="mini-container-detailed",
                     )
                 ], className='mini-container4'),
 
-            ], className='detailed-info-grid')
+            ], className='detailed-info-grid', id='detailed-info-grid')
 
         ], className='detailed-information'),
 
@@ -286,7 +281,7 @@ nutricao_layout = html.Div(children=[
                 ], className='startup1'),
 
                 html.Div(children=[
-                    dcc.Link(html.Img(src='assets/images/bbq-removebg-preview.png'))
+                    dcc.Link(html.Img(src='assets/images/beef trader.png'))
                 ], className='startup2'),
                 
                 html.Div(children=[
@@ -299,41 +294,6 @@ nutricao_layout = html.Div(children=[
 
     ], className='detailed-grid-container')
 
-])
-
-# Página de detalhes da mão de obra
-mdo_layout = html.Div(children=[
-    html.H1(children=df['Nome da Fazenda'][0] + ' - Mão de Obra', style={'text-align':'center'}),
-
-])
-
-# Página de detalhes da sanidade
-sanidade_layout = html.Div(children=[
-    html.H1(children=df['Nome da Fazenda'][0] + ' - Sanidade', style={'text-align':'center'}),
-
-])
-
-# Página de detalhes da reposição
-reposicao_layout = html.Div(children=[
-    html.H1(children=df['Nome da Fazenda'][0] + ' - Reposição', style={'text-align':'center'}),
-
-])
-
-# Página de detalhes do pastejo
-pastejo_layout = html.Div(children=[
-    html.H1(children=df['Nome da Fazenda'][0] + ' - Pastejo', style={'text-align':'center'}),
-
-])
-
-# Página de detalhes da genética
-genetica_layout = html.Div(children=[
-    html.H1(children=df['Nome da Fazenda'][0] + ' - Genética', style={'text-align':'center'}),
-
-])
-
-# Página de detalhes do resultado geral
-resultados_layout = html.Div(children=[
-    html.H1(children=df['Nome da Fazenda'][0] + ' - Resultado Geral', style={'text-align':'center'}),
 ])
 
 @app.callback(dash.dependencies.Output('page-content', 'children'),
@@ -429,6 +389,79 @@ def update_value(n_clicks, field, new_value):
                         height=620,
                         paper_bgcolor='#fafcff'
                     )}
+
+@app.callback([Output('detailed-info-grid', 'children'), Output('nutricao-por-custo', 'children'), Output('nutricao-por-bruto', 'children'), Output('resultados-operacao', 'children'), Output('graph-bar', 'figure')],
+              [Input('percent-slider-eficiency', 'value'),
+               Input('percent-slider-cost', 'value')])
+def simulate(eficiency, cost):
+    df['Alimentação'] = df['Alimentação'] - ((cost/100) * df['Alimentação'])
+    df['Peso Médio dos Animais (@)'] = df['Peso Médio dos Animais (@)'] + ((eficiency/100) * df['Peso Médio dos Animais (@)'])
+
+    df['Faturamento Bruto'] = df['Faturamento Bruto'] + ((eficiency/100) * df['Faturamento Bruto'])
+    df['Resultado'] = df['Faturamento Bruto'] - df['Custo total']
+
+    us = df.iloc[0]
+
+    return [
+        # Information 1
+        html.Div(children=[
+            html.Div(
+                ['R$ ' + str(us['Resultado']/200), html.H4(id="totalText"), html.P("Lucro por ha")],
+                id="lucro-por-ha",
+                className="mini-container-detailed",
+            )
+        ], className='mini-container1'),
+        
+        # Information 2
+        html.Div(children=[
+            html.Div(
+                ['R$ ' + str(round(us['Resultado']/(us['Número de Machos terminação'] * us['Peso Médio dos Animais (@)']), 2)), html.H4(id="depreText"), html.P("Lucro por @")],
+                id="depre",
+                className="mini-container-detailed",
+            )
+        ], className='mini-container2'),
+
+        # Information 3
+        html.Div(children=[
+            html.Div(
+                ['R$ ' + str(round(us['Alimentação']/200, 2)), html.H4(id="fatText"), html.P("Nutrição por ha")],
+                id="fat",
+                className="mini-container-detailed",
+            )
+        ], className='mini-container3'),
+        
+        # Information 4
+        html.Div(children=[
+            html.Div(
+                ['R$ ' + str(round(us['Alimentação']/(us['Número de Machos terminação'] * us['Peso Médio dos Animais (@)']), 2)), html.H4(id="receitaText"), html.P("Nutrição por @")],
+                id="receita",
+                className="mini-container-detailed",
+            )
+        ], className='mini-container4')
+    ], [
+        html.Div(
+            [str(100.0*us['Alimentação']/us['Custo total']) + '%', html.H4(id="receitaText"), html.P("Nutrição / Custo Total")],
+            className="mini-container-simulation",
+        )
+    ], [
+        html.Div(
+            [str(100.0*us['Alimentação']/us['Faturamento Bruto']) + '%', html.H4(id="receitaText"), html.P("Nutrição / Renda Bruta")],
+            className="mini-container-simulation",
+        )
+    ], [
+        html.Div(
+            ['R$ ' + str(us['Resultado']), html.H4(id="receitaText"), html.P("Resultado da op.")],
+            className="mini-container-simulation-large",
+        )
+    ], {
+        'data': [
+            go.Bar(
+                x = ['Lucro real/ha', 'Lucro ótimo/ha'],
+                y = [df['Resultado'][0]/200, 988.98],
+                name = 'Lucro'
+            )
+        ],
+    }
 
 if __name__ == '__main__':
     app.run_server(debug=True)
