@@ -160,14 +160,14 @@ nutricao_layout = html.Div(children=[
                 
                 html.Div(children=[
                     html.Div(
-                        [str(100.0*us['Alimentação']/us['Custo total']) + '%', html.H4(id="receitaText"), html.P("Nutrição / Custo Total")],
+                        [str(round(100.0*us['Alimentação']/us['Custo total'], 2)) + '%', html.H4(id="receitaText"), html.P("Nutrição / Custo Total")],
                         className="mini-container-simulation",
                     )
                 ], className='total-relation', id="nutricao-por-custo"),
 
                 html.Div(children=[
                     html.Div(
-                        [str(100.0*us['Alimentação']/us['Faturamento Bruto']) + '%', html.H4(id="receitaText"), html.P("Nutrição / Renda Bruta")],
+                        [str(round(100.0*us['Alimentação']/us['Faturamento Bruto'], 2)) + '%', html.H4(id="receitaText"), html.P("Nutrição / Renda Bruta")],
                         className="mini-container-simulation",
                     )
                 ], className='rendabruta-relation', id="nutricao-por-bruto"),
@@ -394,11 +394,12 @@ def update_value(n_clicks, field, new_value):
               [Input('percent-slider-eficiency', 'value'),
                Input('percent-slider-cost', 'value')])
 def simulate(eficiency, cost):
-    df['Alimentação'] = df['Alimentação'] - ((cost/100) * df['Alimentação'])
-    df['Peso Médio dos Animais (@)'] = df['Peso Médio dos Animais (@)'] + ((eficiency/100) * df['Peso Médio dos Animais (@)'])
+    if (eficiency != 0 or cost != 0):
+        df['Alimentação'] = df['Alimentação'] - ((cost/100) * df['Alimentação'])
+        df['Peso Médio dos Animais (@)'] = df['Peso Médio dos Animais (@)'] + ((eficiency/100) * df['Peso Médio dos Animais (@)'])
 
-    df['Faturamento Bruto'] = df['Faturamento Bruto'] + ((eficiency/100) * df['Faturamento Bruto'])
-    df['Resultado'] = df['Faturamento Bruto'] - df['Custo total']
+        df['Faturamento Bruto'] = df['Faturamento Bruto'] + ((eficiency/100) * df['Faturamento Bruto'])
+        df['Resultado'] = df['Faturamento Bruto'] - df['Custo total']
 
     us = df.iloc[0]
 
@@ -406,7 +407,7 @@ def simulate(eficiency, cost):
         # Information 1
         html.Div(children=[
             html.Div(
-                ['R$ ' + str(us['Resultado']/200), html.H4(id="totalText"), html.P("Lucro por ha")],
+                ['R$ ' + str(round(us['Resultado']/200, 2)), html.H4(id="totalText"), html.P("Lucro por ha")],
                 id="lucro-por-ha",
                 className="mini-container-detailed",
             )
@@ -440,17 +441,17 @@ def simulate(eficiency, cost):
         ], className='mini-container4')
     ], [
         html.Div(
-            [str(100.0*us['Alimentação']/us['Custo total']) + '%', html.H4(id="receitaText"), html.P("Nutrição / Custo Total")],
+            [str(round(100.0*us['Alimentação']/us['Custo total'], 2)) + '%', html.H4(id="receitaText"), html.P("Nutrição / Custo Total")],
             className="mini-container-simulation",
         )
     ], [
         html.Div(
-            [str(100.0*us['Alimentação']/us['Faturamento Bruto']) + '%', html.H4(id="receitaText"), html.P("Nutrição / Renda Bruta")],
+            [str(round(100.0*us['Alimentação']/us['Faturamento Bruto'], 2)) + '%', html.H4(id="receitaText"), html.P("Nutrição / Renda Bruta")],
             className="mini-container-simulation",
         )
     ], [
         html.Div(
-            ['R$ ' + str(us['Resultado']), html.H4(id="receitaText"), html.P("Resultado da op.")],
+            ['R$ ' + str(round(us['Resultado'], 2)), html.H4(id="receitaText"), html.P("Resultado da op.")],
             className="mini-container-simulation-large",
         )
     ], {
